@@ -36,7 +36,7 @@ export default function ResultView({ fallbackInput }: Props) {
 
   const shareUrl = "https://fire-calculator-bery1.vercel.app";
 
-  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+  const xShareUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(
     shareText,
   )}&url=${encodeURIComponent(shareUrl)}`;
 
@@ -69,11 +69,9 @@ export default function ResultView({ fallbackInput }: Props) {
       </div>
 
       <div className="mt-8 text-center">
-        <a href={twitterUrl} target="_blank" rel="noopener noreferrer">
-          <button
-            className="inline-flex items-center rounded-lg bg-sky-500 px-6 py-3 text-white font-bold hover:bg-sky-600 transition"
-          >
-            Twitterでシェアする
+        <a href={xShareUrl} target="_blank" rel="noopener noreferrer">
+          <button className="inline-flex items-center rounded-lg bg-black px-6 py-3 text-white font-bold hover:bg-gray-800 transition">
+            Xでシェアする
           </button>
         </a>
       </div>
