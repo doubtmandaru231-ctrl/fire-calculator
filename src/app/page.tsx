@@ -4,7 +4,7 @@ export default function Home() {
       
       {/* ヘッダー */}
       <h1 className="text-4xl font-black text-gray-900 mb-4">
-        🔥 40歳までにFIREできる？
+        🔥 あなたは何歳でFIREできる？
       </h1>
 
       <p className="text-lg text-gray-600 mb-8">
