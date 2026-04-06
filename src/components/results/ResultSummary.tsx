@@ -176,6 +176,20 @@ export default function ResultSummary({ result }: Props) {
           </div>
         </div>
       )}
+
+      <div className="mt-6 text-center">
+        <button
+          type="button"
+          disabled
+          className="w-full rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 py-4 text-lg font-bold text-white opacity-80 cursor-not-allowed"
+        >
+          より詳細な改善プランを見る（準備中）
+        </button>
+
+        <p className="mt-2 text-xs text-gray-400">
+          積立額・支出・FIRE年齢を最適化した具体プランを自動生成（近日公開）
+        </p>
+      </div>
     </section>
   );
 }
