@@ -30,9 +30,13 @@ export default function ResultView({ fallbackInput }: Props) {
     }
   }, []);
 
-  const shareText = `私は${result.fireAge ?? "?"}歳でFIRE達成予定でした🔥
-あなたは何歳でFIREできる？
-#FIRE #資産運用`;
+    const shareText = `診断したら「${result.fireAge ?? "?"}歳でFIRE」だった😇
+
+    このままだと遅すぎるかも…
+
+    あなたは何歳？
+    無料で診断できる👇
+    #FIRE #資産運用`;
 
   const shareUrl = "https://fire-calculator-bery1.vercel.app";
 
