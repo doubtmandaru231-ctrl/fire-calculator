@@ -130,28 +130,50 @@ export default function ResultSummary({ result }: Props) {
       </div>
 
       {suggestions && suggestions.length > 0 && (
-        <div className="mt-5">
-          <h3 className="text-sm font-bold text-gray-600 mb-3">
-            {canFire ? '📌 アドバイス' : '💡 改善提案'}
-          </h3>
-          <ul className="space-y-2">
-            {suggestions.map((s, i) => (
-              <li
-                key={i}
-                className={`flex gap-3 rounded-xl p-3 text-sm border ${
-                  s.type === 'success'
-                    ? 'bg-emerald-50 border-emerald-100 text-emerald-800'
-                    : 'bg-amber-50 border-amber-100 text-amber-900'
-                }`}
-              >
-                <span className="shrink-0 text-base leading-snug">{SUGGESTION_ICONS[s.type]}</span>
-                <div>
-                  <p className="font-semibold leading-snug">{s.label}</p>
-                  {s.detail && <p className="mt-0.5 text-xs opacity-80">{s.detail}</p>}
-                </div>
-              </li>
-            ))}
-          </ul>
+        <div className="mt-5 space-y-4">
+          <div>
+            <h3 className="text-sm font-bold text-gray-600 mb-3">
+              {canFire ? '📌 アドバイス' : '💡 改善提案'}
+            </h3>
+            <ul className="space-y-2">
+              {suggestions.map((s, i) => (
+                <li
+                  key={i}
+                  className={`flex gap-3 rounded-xl p-3 text-sm border ${
+                    s.type === 'success'
+                      ? 'bg-emerald-50 border-emerald-100 text-emerald-800'
+                      : 'bg-amber-50 border-amber-100 text-amber-900'
+                  }`}
+                >
+                  <span className="shrink-0 text-base leading-snug">{SUGGESTION_ICONS[s.type]}</span>
+                  <div>
+                    <p className="font-semibold leading-snug">{s.label}</p>
+                    {s.detail && <p className="mt-0.5 text-xs opacity-80">{s.detail}</p>}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 text-sm text-gray-700">
+            <p className="font-bold mb-2">📈 改善するとどうなる？</p>
+
+            {!canFire ? (
+              <p className="leading-relaxed">
+                👉 毎月の積立を
+                <span className="font-bold text-emerald-600"> +5万円 </span>
+                増やせば、
+                <span className="font-bold">FIRE達成年齢が約3〜5年早まる可能性</span>
+                があります。
+              </p>
+            ) : (
+              <p className="leading-relaxed">
+                👉 今のペースなら
+                <span className="font-bold text-emerald-600"> 前倒しFIRE </span>
+                も狙えます。積立額の維持や生活費の最適化で、さらに余裕を作れます。
+              </p>
+            )}
+          </div>
         </div>
       )}
     </section>
