@@ -15,6 +15,45 @@ const DEFAULT_INPUT: SimpleInput = {
   expectedReturn: 0.05,
 };
 
+const presets: Array<{ label: string; data: SimpleInput }> = [
+  {
+    label: '30代サラリーマン',
+    data: {
+      currentAge: 35,
+      retirementAge: 55,
+      currentAssets: 500,
+      monthlyIncome: 50,
+      monthlySaving: 15,
+      monthlyExpenseAfterFire: 25,
+      expectedReturn: 0.05,
+    },
+  },
+  {
+    label: '子育て世帯',
+    data: {
+      currentAge: 35,
+      retirementAge: 60,
+      currentAssets: 300,
+      monthlyIncome: 45,
+      monthlySaving: 10,
+      monthlyExpenseAfterFire: 30,
+      expectedReturn: 0.05,
+    },
+  },
+  {
+    label: '高収入パターン',
+    data: {
+      currentAge: 35,
+      retirementAge: 50,
+      currentAssets: 1000,
+      monthlyIncome: 80,
+      monthlySaving: 30,
+      monthlyExpenseAfterFire: 40,
+      expectedReturn: 0.06,
+    },
+  },
+];
+
 interface FieldConfig {
   key: keyof SimpleInput;
   label: string;
@@ -89,22 +128,19 @@ const fields: FieldConfig[] = [
     max: 15,
     step: 0.5,
     description: 'インデックス投資の想定利回り（目安: 5〜7%）',
-    format: (v) => `${v}%`,
+    format: (v) => `${(v * 100).toFixed(1)}%`,
   },
 ];
 
 export default function SimpleInputForm() {
   const router = useRouter();
   const [input, setInput] = useState<SimpleInput>(DEFAULT_INPUT);
-  // 最初のレンダー（DEFAULT_INPUT）では保存しないためのフラグ
   const mountedRef = useRef(false);
 
-  // マウント時に localStorage から復元
   useEffect(() => {
     setInput(loadFromStorage(SIMPLE_INPUT_KEY, DEFAULT_INPUT));
   }, []);
 
-  // 入力変化時に自動保存（初回レンダーはスキップ）
   useEffect(() => {
     if (!mountedRef.current) {
       mountedRef.current = true;
@@ -118,6 +154,10 @@ export default function SimpleInputForm() {
     if (!Number.isNaN(value)) {
       setInput((prev) => ({ ...prev, [key]: value }));
     }
+  };
+
+  const handlePresetSelect = (preset: SimpleInput) => {
+    setInput(preset);
   };
 
   const handleSubmit = () => {
@@ -140,14 +180,30 @@ export default function SimpleInputForm() {
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-      <h2 className="text-lg font-bold text-gray-700 mb-5">📋 あなたの情報を入力</h2>
+      <h2 className="text-lg font-bold text-gray-700 mb-2">📋 あなたの情報を入力</h2>
+      <p className="text-sm text-gray-500 mb-5">
+        まずはプリセットを選ぶと、すぐに試せます。
+      </p>
+
+      <div className="mb-6 flex flex-wrap gap-2">
+        {presets.map((preset) => (
+          <button
+            key={preset.label}
+            type="button"
+            onClick={() => handlePresetSelect(preset.data)}
+            className="px-3 py-2 text-sm rounded-full border border-gray-300 bg-white hover:bg-gray-100 transition-colors"
+          >
+            {preset.label}
+          </button>
+        ))}
+      </div>
 
       <div className="space-y-5">
         {fields.map((field) => (
           <div key={field.key}>
-            <div className="flex justify-between items-center mb-1">
+            <div className="flex justify-between items-center mb-1 gap-3">
               <label className="text-sm font-medium text-gray-700">{field.label}</label>
-              <span className="text-lg font-bold text-emerald-600">
+              <span className="text-lg font-bold text-emerald-600 shrink-0">
                 {displayValue(field)}
               </span>
             </div>
@@ -160,13 +216,13 @@ export default function SimpleInputForm() {
               onChange={(e) => handleChange(field.key, e.target.value)}
               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-emerald-500"
             />
-            <div className="flex justify-between text-xs text-gray-400 mt-1">
-              <span>
+            <div className="flex justify-between text-xs text-gray-400 mt-1 gap-2">
+              <span className="shrink-0">
                 {field.min}
                 {field.unit}
               </span>
               <span className="text-gray-400 text-center flex-1 px-2">{field.description}</span>
-              <span>
+              <span className="shrink-0">
                 {field.max}
                 {field.unit}
               </span>
@@ -175,7 +231,6 @@ export default function SimpleInputForm() {
         ))}
       </div>
 
-      {/* サマリー */}
       <div className="mt-6 bg-gray-50 rounded-xl p-4 text-sm text-gray-600 space-y-1">
         <p>
           月間貯蓄率:{' '}
