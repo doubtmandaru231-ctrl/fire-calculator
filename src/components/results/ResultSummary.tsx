@@ -16,11 +16,11 @@ interface CardProps {
 
 function Card({ label, value, sub, accent = 'gray' }: CardProps) {
   const colors: Record<string, string> = {
-    green:  'bg-emerald-50 border-emerald-200 text-emerald-700',
-    red:    'bg-red-50 border-red-200 text-red-700',
-    blue:   'bg-blue-50 border-blue-200 text-blue-700',
+    green: 'bg-emerald-50 border-emerald-200 text-emerald-700',
+    red: 'bg-red-50 border-red-200 text-red-700',
+    blue: 'bg-blue-50 border-blue-200 text-blue-700',
     orange: 'bg-orange-50 border-orange-200 text-orange-700',
-    gray:   'bg-gray-50 border-gray-200 text-gray-700',
+    gray: 'bg-gray-50 border-gray-200 text-gray-700',
   };
 
   return (
@@ -34,8 +34,8 @@ function Card({ label, value, sub, accent = 'gray' }: CardProps) {
 
 const SUGGESTION_ICONS: Record<SuggestionType, string> = {
   success: '✅',
-  saving:  '💰',
-  delay:   '⏳',
+  saving: '💰',
+  delay: '⏳',
   expense: '🏠',
 };
 
@@ -51,12 +51,13 @@ export default function ResultSummary({ result }: Props) {
 
   const shortfallAmount = shortfall ?? 0;
   const isShortfall = shortfallAmount < 0;
+  const surplusAmount = Math.max(0, shortfallAmount);
+  const hasLargeSurplus = canFire && surplusAmount >= 500;
 
   return (
     <section className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
       <h2 className="text-lg font-bold text-gray-700 mb-4">結論</h2>
 
-      {/* FIRE判定バナー */}
       <div
         className={`rounded-xl p-5 mb-5 text-center border ${
           canFire
@@ -76,15 +77,27 @@ export default function ResultSummary({ result }: Props) {
         ) : (
           <>
             <p className="text-sm text-red-500 mb-1">現在の条件では</p>
-            <p className="text-2xl font-bold text-red-500 mb-1">
-              FIRE達成が困難です
-            </p>
+            <p className="text-2xl font-bold text-red-500 mb-1">FIRE達成が困難です</p>
             <p className="text-sm text-gray-500">資産の増加策や支出削減を検討してください</p>
           </>
         )}
       </div>
 
-      {/* 数値カード */}
+      {!canFire && (
+        <div className="mt-4 mb-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+          ⚠️ このままだと資産が不足する可能性があります。
+          {isShortfall && (
+            <span className="font-semibold"> あと{toManEn(Math.round(Math.abs(shortfallAmount)))}不足しています。</span>
+          )}
+        </div>
+      )}
+
+      {hasLargeSurplus && (
+        <div className="mt-4 mb-5 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-700">
+          🔥 かなり余裕があります。この条件ならFIRE成功確率は高めです。
+        </div>
+      )}
+
       <div className="grid grid-cols-2 gap-3">
         <Card
           label="必要資産額"
@@ -116,7 +129,6 @@ export default function ResultSummary({ result }: Props) {
         />
       </div>
 
-      {/* 改善提案 */}
       {suggestions && suggestions.length > 0 && (
         <div className="mt-5">
           <h3 className="text-sm font-bold text-gray-600 mb-3">
@@ -132,14 +144,10 @@ export default function ResultSummary({ result }: Props) {
                     : 'bg-amber-50 border-amber-100 text-amber-900'
                 }`}
               >
-                <span className="shrink-0 text-base leading-snug">
-                  {SUGGESTION_ICONS[s.type]}
-                </span>
+                <span className="shrink-0 text-base leading-snug">{SUGGESTION_ICONS[s.type]}</span>
                 <div>
                   <p className="font-semibold leading-snug">{s.label}</p>
-                  {s.detail && (
-                    <p className="mt-0.5 text-xs opacity-80">{s.detail}</p>
-                  )}
+                  {s.detail && <p className="mt-0.5 text-xs opacity-80">{s.detail}</p>}
                 </div>
               </li>
             ))}
