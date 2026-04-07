@@ -25,12 +25,9 @@ export default function PremiumModal({ isOpen, onClose }: Props) {
           href="https://buy.stripe.com/aFa4gBaaIcc34eJ4Ng93y00"
           target="_blank"
           rel="noopener noreferrer"
+          className="block w-full text-center bg-emerald-600 text-white py-3 rounded-xl font-bold mb-2 hover:bg-emerald-700 transition"
         >
-          <button
-            className="w-full bg-emerald-600 text-white py-3 rounded-xl font-bold mb-2 hover:bg-emerald-700 transition"
-          >
-            ¥980で購入する
-          </button>
+          ¥980で購入する
         </a>
 
         <button
@@ -44,7 +41,7 @@ export default function PremiumModal({ isOpen, onClose }: Props) {
   );
 }//
 //  PremiumModal.tsx
-//  
+//
 //
 //  Created by 杉本健 on 2026/04/06.
 //
