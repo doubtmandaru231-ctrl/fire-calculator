@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { FireResult, FireInputs, formatWan } from "@/lib/fireCalculator";
+import PremiumModal from "@/components/PremiumModal";
 
 interface Props {
   result: FireResult;
@@ -13,6 +15,8 @@ export default function ResultSummary({ result, inputs }: Props) {
     inputs.monthlyIncome > 0
       ? Math.round((monthlySavings / inputs.monthlyIncome) * 100)
       : 0;
+
+  const [isPremiumOpen, setIsPremiumOpen] = useState(false);
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
@@ -44,6 +48,25 @@ export default function ResultSummary({ result, inputs }: Props) {
         )}
       </div>
 
+      {/* 危機感アラート */}
+      {fireYear === null && (
+        <div className="mb-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+          ⚠️ このままだとFIRE達成はかなり難しい状態です。戦略の見直しが必要です。
+        </div>
+      )}
+
+      {fireYear !== null && fireYear > 25 && (
+        <div className="mb-5 rounded-xl border border-orange-200 bg-orange-50 p-4 text-sm text-orange-700">
+          ⏳ FIREまでやや時間がかかります。積立額を増やすと前倒しできる可能性があります。
+        </div>
+      )}
+
+      {fireYear !== null && fireYear <= 15 && (
+        <div className="mb-5 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-700">
+          🔥 とても良いペースです。このままでもFIRE達成可能性は高いです。
+        </div>
+      )}
+
       {/* 詳細数値 */}
       <div className="grid grid-cols-2 gap-3">
         <StatCard
@@ -72,7 +95,46 @@ export default function ResultSummary({ result, inputs }: Props) {
         />
       </div>
 
-      {/* アドバイス */}
+      {/* 改善提案 */}
+      <div className="mt-6 rounded-xl border border-gray-200 bg-gray-50 p-4 text-sm text-gray-700">
+        <p className="font-bold mb-2">📈 改善するとどうなる？</p>
+
+        {fireYear === null ? (
+          <p>
+            👉 毎月の積立を
+            <span className="font-bold text-emerald-600"> +5万円 </span>
+            増やすことで、FIRE達成が現実的になる可能性があります。
+          </p>
+        ) : (
+          <p>
+            👉 今のペースなら
+            <span className="font-bold text-emerald-600"> 前倒しFIRE </span>
+            も可能です。積立額を増やすとさらに早まります。
+          </p>
+        )}
+      </div>
+
+      {/* 有料導線 */}
+      <div className="mt-6 text-center">
+        <button
+          onClick={() => setIsPremiumOpen(true)}
+          className="w-full rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 py-4 text-lg font-bold text-white"
+        >
+          より詳細な改善プランを見る
+        </button>
+
+        <p className="mt-2 text-xs text-gray-400">
+          積立額・支出・FIRE年齢を最適化した具体プランを自動生成
+        </p>
+      </div>
+
+      {/* モーダル */}
+      <PremiumModal
+        isOpen={isPremiumOpen}
+        onClose={() => setIsPremiumOpen(false)}
+      />
+
+      {/* 既存アラート */}
       {monthlySavings <= 0 && (
         <div className="mt-4 bg-red-50 border border-red-200 rounded-lg p-3">
           <p className="text-sm text-red-600 font-medium">⚠️ 支出が収入を超えています</p>
