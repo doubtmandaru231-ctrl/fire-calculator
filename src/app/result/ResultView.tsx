@@ -45,7 +45,7 @@ export default function ResultView({ fallbackInput }: Props) {
       increase,
       fireAge: simulated.fireAge ?? null,
     };
-  }).filter((item) => item.fireAge !== null);
+  }).filter((item): item is { increase: number; fireAge: number } => item.fireAge !== null);
 
   const expenseScenarios = Array.from({ length: 20 }, (_, i) => {
     const reduction = i + 1;
@@ -61,7 +61,7 @@ export default function ResultView({ fallbackInput }: Props) {
       reduction,
       fireAge: simulated.fireAge ?? null,
     };
-  }).filter((item) => item.fireAge !== null);
+  }).filter((item): item is { reduction: number; fireAge: number } => item.fireAge !== null);
 
   const bestInvestmentScenario = investmentScenarios.length
     ? investmentScenarios.reduce((best, current) =>
