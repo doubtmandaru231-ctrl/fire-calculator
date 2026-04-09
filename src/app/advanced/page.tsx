@@ -1,3 +1,4 @@
+'use client';
 import { useEffect, useState } from 'react';
 import AdvancedInputForm from '@/components/forms/AdvancedInputForm';
 import PremiumModal from '@/components/PremiumModal';
