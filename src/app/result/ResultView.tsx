@@ -8,6 +8,7 @@ import ResultSummary from "@/components/results/ResultSummary";
 import BreakdownTable from "@/components/results/BreakdownTable";
 import AssetChart from "@/components/results/AssetChart";
 import CashFlowTable from "@/components/results/CashFlowTable";
+import PremiumModal from "@/components/PremiumModal";
 
 /** @deprecated storage.ts の ADVANCED_INPUT_KEY を使ってください */
 export const ADVANCED_INPUT_STORAGE_KEY = ADVANCED_INPUT_KEY;
@@ -21,12 +22,18 @@ export default function ResultView({ fallbackInput }: Props) {
     runAdvancedSimulation(fallbackInput),
   );
   const [isFromStorage, setIsFromStorage] = useState(false);
+  const [isPremium, setIsPremium] = useState(false);
+  const [isPremiumOpen, setIsPremiumOpen] = useState(false);
 
   useEffect(() => {
     const stored = loadFromStorage<AdvancedInput | null>(ADVANCED_INPUT_KEY, null);
     if (stored) {
       setResult(runAdvancedSimulation(stored));
       setIsFromStorage(true);
+    }
+    const premiumFlag = localStorage.getItem("isPremium");
+    if (premiumFlag === "true") {
+      setIsPremium(true);
     }
   }, []);
 
@@ -67,10 +74,36 @@ export default function ResultView({ fallbackInput }: Props) {
 
       <div className="space-y-5">
         <ResultSummary result={result} />
-        {result.breakdown && <BreakdownTable breakdown={result.breakdown} />}
-        <AssetChart snapshots={result.snapshots} fireAge={result.fireAge} />
-        <CashFlowTable snapshots={result.snapshots} fireAge={result.fireAge} />
+
+        {isPremium ? (
+          <>
+            {result.breakdown && <BreakdownTable breakdown={result.breakdown} />}
+            <AssetChart snapshots={result.snapshots} fireAge={result.fireAge} />
+            <CashFlowTable snapshots={result.snapshots} fireAge={result.fireAge} />
+          </>
+        ) : (
+          <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-6 text-center">
+            <h3 className="mb-2 text-lg font-bold text-gray-800">
+              🔒 詳細シミュレーションは有料版で解放
+            </h3>
+            <p className="mb-4 text-sm text-gray-600">
+              資産推移・キャッシュフロー・内訳表を確認できます。
+            </p>
+            <button
+              type="button"
+              onClick={() => setIsPremiumOpen(true)}
+              className="rounded-xl bg-emerald-600 px-6 py-3 font-bold text-white hover:bg-emerald-700 transition"
+            >
+              詳細シミュレーションを解放する（¥980）
+            </button>
+          </div>
+        )}
       </div>
+
+      <PremiumModal
+        isOpen={isPremiumOpen}
+        onClose={() => setIsPremiumOpen(false)}
+      />
 
       <div className="mt-8 text-center">
         <a href={xShareUrl} target="_blank" rel="noopener noreferrer">
