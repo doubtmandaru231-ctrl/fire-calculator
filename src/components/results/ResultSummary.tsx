@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { SimulationResult, SuggestionType } from '@/types';
 import { toManEn } from '@/lib/calculator/utils';
 
@@ -57,6 +57,14 @@ export default function ResultSummary({ result }: Props) {
   const surplusAmount = Math.max(0, shortfallAmount);
   const hasLargeSurplus = canFire && surplusAmount >= 500;
   const [isPremiumOpen, setIsPremiumOpen] = useState(false);
+  const [isPremium, setIsPremium] = useState(false);
+
+  useEffect(() => {
+    const flag = localStorage.getItem('isPremium');
+    if (flag === 'true') {
+      setIsPremium(true);
+    }
+  }, []);
 
   return (
     <section className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
@@ -181,19 +189,21 @@ export default function ResultSummary({ result }: Props) {
         </div>
       )}
 
-      <div className="mt-6 text-center">
-        <button
-          type="button"
-          onClick={() => setIsPremiumOpen(true)}
-          className="w-full rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 py-4 text-lg font-bold text-white hover:opacity-90 transition"
-        >
-          より詳細な改善プランを見る
-        </button>
+      {!isPremium && (
+        <div className="mt-6 text-center">
+          <button
+            type="button"
+            onClick={() => setIsPremiumOpen(true)}
+            className="w-full rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 py-4 text-lg font-bold text-white hover:opacity-90 transition"
+          >
+            より詳細な改善プランを見る
+          </button>
 
-        <p className="mt-2 text-xs text-gray-400">
-          積立額・支出・FIRE年齢を最適化した具体プランを自動生成
-        </p>
-      </div>
+          <p className="mt-2 text-xs text-gray-400">
+            積立額・支出・FIRE年齢を最適化した具体プランを自動生成
+          </p>
+        </div>
+      )}
 
       <PremiumModal
         isOpen={isPremiumOpen}
