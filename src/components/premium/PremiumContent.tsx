@@ -13,10 +13,6 @@ export default function PremiumContent({
   monthlyInvestmentIncrease,
   monthlyExpenseReduction,
 }: Props) {
-  const hasBothAges = currentFireAge !== null && optimizedFireAge !== null;
-  const yearsShortened = hasBothAges
-    ? Math.max(0, currentFireAge - optimizedFireAge)
-    : null;
 
   const hasMeaningfulInvestmentAction = monthlyInvestmentIncrease > 0;
   const hasMeaningfulExpenseAction = monthlyExpenseReduction > 0;
@@ -31,39 +27,34 @@ export default function PremiumContent({
           最短FIREプラン
         </h2>
         <p className="mt-2 text-sm text-gray-600">
-          今の条件から、最短でFIREに近づくための改善アクションをまとめました。
+          今の条件をもとに、最短FIREに近づくための現実的な改善アクションをまとめました。
         </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
-        <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-          <p className="text-xs font-bold text-gray-500">現在の想定</p>
-          <p className="mt-2 text-3xl font-black text-gray-900">
-            {currentFireAge !== null ? `${currentFireAge}歳` : "試算不可"}
-          </p>
-          <p className="mt-2 text-sm text-gray-500">
-            現在の条件でのFIRE想定年齢
-          </p>
-        </div>
+      <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+        <h3 className="mb-3 text-lg font-bold text-gray-900">
+          現在の想定
+        </h3>
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+            <p className="text-xs font-bold text-gray-500">現在のFIRE想定年齢</p>
+            <p className="mt-2 text-3xl font-black text-gray-900">
+              {currentFireAge !== null ? `${currentFireAge}歳` : "試算不可"}
+            </p>
+            <p className="mt-2 text-sm text-gray-500">
+              現在の条件で到達できる想定ラインです。
+            </p>
+          </div>
 
-        <div className="rounded-2xl border border-emerald-200 bg-white p-5 shadow-sm">
-          <p className="text-xs font-bold text-emerald-600">改善後の想定</p>
-          <p className="mt-2 text-3xl font-black text-emerald-600">
-            {optimizedFireAge !== null ? `${optimizedFireAge}歳` : "試算不可"}
-          </p>
-          <p className="mt-2 text-sm text-gray-500">
-            おすすめ改善を反映した場合の想定
-          </p>
-        </div>
-
-        <div className="rounded-2xl border border-orange-200 bg-white p-5 shadow-sm">
-          <p className="text-xs font-bold text-orange-600">短縮できる年数</p>
-          <p className="mt-2 text-3xl font-black text-orange-500">
-            {yearsShortened !== null ? `${yearsShortened}年` : "-"}
-          </p>
-          <p className="mt-2 text-sm text-gray-500">
-            改善によって前倒しできる見込み
-          </p>
+          <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4">
+            <p className="text-xs font-bold text-emerald-700">Premiumで分かること</p>
+            <p className="mt-2 text-lg font-bold text-gray-900">
+              最短FIREに近づくための具体アクション
+            </p>
+            <p className="mt-2 text-sm text-gray-600">
+              積立額アップと支出改善の両面から、今すぐ着手できる改善案を確認できます。
+            </p>
+          </div>
         </div>
       </div>
 
