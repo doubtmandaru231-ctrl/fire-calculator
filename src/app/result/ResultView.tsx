@@ -75,15 +75,26 @@ export default function ResultView({ fallbackInput }: Props) {
       )
     : null;
 
-  const optimizedFireAgeCandidates = [
-    currentFireAge,
-    bestInvestmentScenario?.fireAge ?? null,
-    bestExpenseScenario?.fireAge ?? null,
-  ].filter((age): age is number => age !== null);
+  const combinedScenario =
+    bestInvestmentScenario && bestExpenseScenario
+      ? runAdvancedSimulation({
+          ...activeInput,
+          assets: activeInput.assets.map((asset) => ({
+            ...asset,
+            annualContribution:
+              asset.annualContribution + bestInvestmentScenario.increase * 12,
+          })),
+          cashFlow: {
+            ...activeInput.cashFlow,
+            annualExpense: Math.max(
+              0,
+              activeInput.cashFlow.annualExpense - bestExpenseScenario.reduction * 12,
+            ),
+          },
+        })
+      : null;
 
-  const optimizedFireAge = optimizedFireAgeCandidates.length
-    ? Math.min(...optimizedFireAgeCandidates)
-    : null;
+  const optimizedFireAge = combinedScenario?.fireAge ?? currentFireAge;
 
   const monthlyInvestmentIncrease = bestInvestmentScenario?.increase ?? 0;
   const monthlyExpenseReduction = bestExpenseScenario?.reduction ?? 0;
