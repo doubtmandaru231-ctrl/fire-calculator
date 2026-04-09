@@ -12,13 +12,13 @@ export default function PremiumModal({ isOpen, onClose }: Props) {
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
       <div className="bg-white rounded-2xl p-6 w-[90%] max-w-md">
         <h2 className="text-xl font-bold mb-3">
-          🚀 有料プラン
+          🚀 最短FIREプラン
         </h2>
 
         <ul className="text-sm text-gray-600 space-y-2 mb-4">
-          <li>・最適な積立額を自動計算</li>
-          <li>・最短FIREプラン提示</li>
-          <li>・複数シナリオ比較</li>
+          <li>・最短でFIREする具体プランを提示</li>
+          <li>・毎月いくらで何年早まるかが分かる</li>
+          <li>・積立 vs 支出改善の最適解を提示</li>
         </ul>
 
         <a
@@ -27,7 +27,7 @@ export default function PremiumModal({ isOpen, onClose }: Props) {
           rel="noopener noreferrer"
           className="block w-full text-center bg-emerald-600 text-white py-3 rounded-xl font-bold mb-2 hover:bg-emerald-700 transition"
         >
-          ¥980で購入する
+          最短FIREプランを手に入れる（¥980）
         </a>
 
         <button

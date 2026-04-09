@@ -18,6 +18,9 @@ export default function PremiumContent({
     ? Math.max(0, currentFireAge - optimizedFireAge)
     : null;
 
+  const hasMeaningfulInvestmentAction = monthlyInvestmentIncrease > 0;
+  const hasMeaningfulExpenseAction = monthlyExpenseReduction > 0;
+
   return (
     <section className="space-y-4">
       <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
@@ -75,10 +78,14 @@ export default function PremiumContent({
               ① 毎月の積立を増やす
             </p>
             <p className="mt-1 text-base font-bold text-gray-900">
-              毎月 +{monthlyInvestmentIncrease}万円 の積立を目指す
+              {hasMeaningfulInvestmentAction
+                ? `毎月 +${monthlyInvestmentIncrease}万円 の積立を目指す`
+                : '現状の積立水準でもかなり良い水準です'}
             </p>
             <p className="mt-1 text-sm text-gray-600">
-              収入アップ、副収入、固定費見直しで原資を作るのがおすすめです。
+              {hasMeaningfulInvestmentAction
+                ? '収入アップ、副収入、固定費見直しで原資を作るのがおすすめです。'
+                : '大きな積立増額をしなくても、現状の条件で十分戦える可能性があります。'}
             </p>
           </div>
 
@@ -87,10 +94,14 @@ export default function PremiumContent({
               ② 毎月の生活費を下げる
             </p>
             <p className="mt-1 text-base font-bold text-gray-900">
-              毎月 -{monthlyExpenseReduction}万円 の支出改善を目指す
+              {hasMeaningfulExpenseAction
+                ? `毎月 -${monthlyExpenseReduction}万円 の支出改善を目指す`
+                : '支出はすでにかなり最適化できています'}
             </p>
             <p className="mt-1 text-sm text-gray-600">
-              通信費、保険、住宅費、サブスクの見直しから着手すると効果が出やすいです。
+              {hasMeaningfulExpenseAction
+                ? '通信費、保険、住宅費、サブスクの見直しから着手すると効果が出やすいです。'
+                : '無理に切り詰めるより、積立や収入面の改善を優先した方が良い可能性があります。'}
             </p>
           </div>
         </div>

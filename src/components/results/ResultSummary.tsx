@@ -196,11 +196,11 @@ export default function ResultSummary({ result }: Props) {
             onClick={() => setIsPremiumOpen(true)}
             className="w-full rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 py-4 text-lg font-bold text-white hover:opacity-90 transition"
           >
-            より詳細な改善プランを見る
+            最短でFIREする具体プランを見る（¥980）
           </button>
 
           <p className="mt-2 text-xs text-gray-400">
-            積立額・支出・FIRE年齢を最適化した具体プランを自動生成
+            あなた専用の最短FIRE戦略を自動生成します
           </p>
         </div>
       )}

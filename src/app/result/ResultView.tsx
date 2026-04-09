@@ -26,6 +26,66 @@ export default function ResultView({ fallbackInput }: Props) {
   const [isPremium, setIsPremium] = useState(false);
   const [isPremiumOpen, setIsPremiumOpen] = useState(false);
 
+  const activeInput =
+    loadFromStorage<AdvancedInput | null>(ADVANCED_INPUT_KEY, null) ?? fallbackInput;
+
+  const currentFireAge = result.fireAge ?? null;
+
+  const investmentScenarios = Array.from({ length: 20 }, (_, i) => {
+    const increase = i + 1;
+    const simulated = runAdvancedSimulation({
+      ...activeInput,
+      monthlyInvestment: activeInput.monthlyInvestment + increase,
+    });
+
+    return {
+      increase,
+      fireAge: simulated.fireAge ?? null,
+    };
+  }).filter((item) => item.fireAge !== null);
+
+  const expenseScenarios = Array.from({ length: 20 }, (_, i) => {
+    const reduction = i + 1;
+    const simulated = runAdvancedSimulation({
+      ...activeInput,
+      monthlyExpense: Math.max(0, activeInput.monthlyExpense - reduction),
+    });
+
+    return {
+      reduction,
+      fireAge: simulated.fireAge ?? null,
+    };
+  }).filter((item) => item.fireAge !== null);
+
+  const bestInvestmentScenario = investmentScenarios.length
+    ? investmentScenarios.reduce((best, current) => {
+        if (best.fireAge === null) return current;
+        if (current.fireAge === null) return best;
+        return current.fireAge < best.fireAge ? current : best;
+      })
+    : null;
+
+  const bestExpenseScenario = expenseScenarios.length
+    ? expenseScenarios.reduce((best, current) => {
+        if (best.fireAge === null) return current;
+        if (current.fireAge === null) return best;
+        return current.fireAge < best.fireAge ? current : best;
+      })
+    : null;
+
+  const optimizedFireAgeCandidates = [
+    currentFireAge,
+    bestInvestmentScenario?.fireAge ?? null,
+    bestExpenseScenario?.fireAge ?? null,
+  ].filter((age): age is number => age !== null);
+
+  const optimizedFireAge = optimizedFireAgeCandidates.length
+    ? Math.min(...optimizedFireAgeCandidates)
+    : null;
+
+  const monthlyInvestmentIncrease = bestInvestmentScenario?.increase ?? 0;
+  const monthlyExpenseReduction = bestExpenseScenario?.reduction ?? 0;
+
   useEffect(() => {
     const stored = loadFromStorage<AdvancedInput | null>(ADVANCED_INPUT_KEY, null);
     if (stored) {
@@ -79,10 +139,10 @@ export default function ResultView({ fallbackInput }: Props) {
         {isPremium ? (
           <>
             <PremiumContent
-              currentFireAge={result.fireAge ?? null}
-              optimizedFireAge={result.fireAge != null ? Math.max(0, result.fireAge - 5) : null}
-              monthlyInvestmentIncrease={3}
-              monthlyExpenseReduction={2}
+              currentFireAge={currentFireAge}
+              optimizedFireAge={optimizedFireAge}
+              monthlyInvestmentIncrease={monthlyInvestmentIncrease}
+              monthlyExpenseReduction={monthlyExpenseReduction}
             />
             {result.breakdown && <BreakdownTable breakdown={result.breakdown} />}
             <AssetChart snapshots={result.snapshots} fireAge={result.fireAge} />
@@ -94,14 +154,14 @@ export default function ResultView({ fallbackInput }: Props) {
               🔒 詳細シミュレーションは有料版で解放
             </h3>
             <p className="mb-4 text-sm text-gray-600">
-              資産推移・キャッシュフロー・内訳表を確認できます。
+              あなた専用の最短FIRE戦略・資産推移・キャッシュフローを確認できます。
             </p>
             <button
               type="button"
               onClick={() => setIsPremiumOpen(true)}
               className="rounded-xl bg-emerald-600 px-6 py-3 font-bold text-white hover:bg-emerald-700 transition"
             >
-              詳細シミュレーションを解放する（¥980）
+              最短FIREプランを解放する（¥980）
             </button>
           </div>
         )}
