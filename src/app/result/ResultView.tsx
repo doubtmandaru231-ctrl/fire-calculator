@@ -35,7 +35,10 @@ export default function ResultView({ fallbackInput }: Props) {
     const increase = i + 1;
     const simulated = runAdvancedSimulation({
       ...activeInput,
-      monthlyInvestment: activeInput.monthlyInvestment + increase,
+      assets: activeInput.assets.map((asset) => ({
+        ...asset,
+        annualContribution: asset.annualContribution + increase * 12,
+      })),
     });
 
     return {
@@ -48,7 +51,10 @@ export default function ResultView({ fallbackInput }: Props) {
     const reduction = i + 1;
     const simulated = runAdvancedSimulation({
       ...activeInput,
-      monthlyExpense: Math.max(0, activeInput.monthlyExpense - reduction),
+      cashFlow: {
+        ...activeInput.cashFlow,
+        annualExpense: Math.max(0, activeInput.cashFlow.annualExpense - reduction * 12),
+      },
     });
 
     return {
@@ -58,19 +64,15 @@ export default function ResultView({ fallbackInput }: Props) {
   }).filter((item) => item.fireAge !== null);
 
   const bestInvestmentScenario = investmentScenarios.length
-    ? investmentScenarios.reduce((best, current) => {
-        if (best.fireAge === null) return current;
-        if (current.fireAge === null) return best;
-        return current.fireAge < best.fireAge ? current : best;
-      })
+    ? investmentScenarios.reduce((best, current) =>
+        current.fireAge < best.fireAge ? current : best,
+      )
     : null;
 
   const bestExpenseScenario = expenseScenarios.length
-    ? expenseScenarios.reduce((best, current) => {
-        if (best.fireAge === null) return current;
-        if (current.fireAge === null) return best;
-        return current.fireAge < best.fireAge ? current : best;
-      })
+    ? expenseScenarios.reduce((best, current) =>
+        current.fireAge < best.fireAge ? current : best,
+      )
     : null;
 
   const optimizedFireAgeCandidates = [
