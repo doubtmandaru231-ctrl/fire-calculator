@@ -117,6 +117,7 @@ export default function ResultSummary({ result, inputs }: Props) {
       {/* 有料導線 */}
       <div className="mt-6 text-center">
         <button
+          type="button"
           onClick={() => setIsPremiumOpen(true)}
           className="w-full rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 py-4 text-lg font-bold text-white"
         >
