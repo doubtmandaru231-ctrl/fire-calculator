@@ -1,7 +1,10 @@
 "use client";
 
+import { useState } from 'react';
 import type { SimulationResult, SuggestionType } from '@/types';
 import { toManEn } from '@/lib/calculator/utils';
+
+import PremiumModal from '@/components/PremiumModal';
 
 interface Props {
   result: SimulationResult;
@@ -53,6 +56,7 @@ export default function ResultSummary({ result }: Props) {
   const isShortfall = shortfallAmount < 0;
   const surplusAmount = Math.max(0, shortfallAmount);
   const hasLargeSurplus = canFire && surplusAmount >= 500;
+  const [isPremiumOpen, setIsPremiumOpen] = useState(false);
 
   return (
     <section className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
@@ -180,16 +184,21 @@ export default function ResultSummary({ result }: Props) {
       <div className="mt-6 text-center">
         <button
           type="button"
-          disabled
-          className="w-full rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 py-4 text-lg font-bold text-white opacity-80 cursor-not-allowed"
+          onClick={() => setIsPremiumOpen(true)}
+          className="w-full rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 py-4 text-lg font-bold text-white hover:opacity-90 transition"
         >
-          より詳細な改善プランを見る（準備中）
+          より詳細な改善プランを見る
         </button>
 
         <p className="mt-2 text-xs text-gray-400">
-          積立額・支出・FIRE年齢を最適化した具体プランを自動生成（近日公開）
+          積立額・支出・FIRE年齢を最適化した具体プランを自動生成
         </p>
       </div>
+
+      <PremiumModal
+        isOpen={isPremiumOpen}
+        onClose={() => setIsPremiumOpen(false)}
+      />
     </section>
   );
 }
