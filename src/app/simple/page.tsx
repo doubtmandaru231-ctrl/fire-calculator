@@ -1,6 +1,16 @@
+import { useEffect, useState } from 'react';
 import SimpleInputForm from '@/components/forms/SimpleInputForm';
+import PremiumModal from '@/components/PremiumModal';
 
 export default function SimplePage() {
+  const [isPremium, setIsPremium] = useState(false);
+  const [isPremiumOpen, setIsPremiumOpen] = useState(false);
+
+  useEffect(() => {
+    const flag = localStorage.getItem('isPremium');
+    if (flag === 'true') setIsPremium(true);
+  }, []);
+
   return (
     <main className="max-w-2xl mx-auto px-4 py-8">
       <div className="text-center mb-8">
@@ -19,10 +29,33 @@ export default function SimplePage() {
 
       <SimpleInputForm />
 
+      {!isPremium && (
+        <div className="mt-8 rounded-2xl border border-emerald-200 bg-emerald-50 p-6 text-center">
+          <h3 className="text-lg font-bold text-gray-800 mb-2">
+            🔒 詳細シミュレーションは有料版で解放
+          </h3>
+          <p className="text-sm text-gray-600 mb-4">
+            最短FIREプラン・資産推移・キャッシュフローを確認できます。
+          </p>
+          <button
+            type="button"
+            onClick={() => setIsPremiumOpen(true)}
+            className="rounded-xl bg-emerald-600 px-6 py-3 text-white font-bold hover:bg-emerald-700 transition"
+          >
+            詳細シミュレーションを解放する（¥980）
+          </button>
+        </div>
+      )}
+
       <footer className="text-center mt-8 text-xs text-gray-400 space-y-1">
         <p>※ このシミュレーターは教育目的です。実際の投資判断は専門家にご相談ください。</p>
         <p>計算式: 必要資産額 = 年間生活費 ÷ 4%ルール</p>
       </footer>
+
+      <PremiumModal
+        isOpen={isPremiumOpen}
+        onClose={() => setIsPremiumOpen(false)}
+      />
     </main>
   );
 }

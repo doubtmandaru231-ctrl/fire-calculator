@@ -1,6 +1,16 @@
+import { useEffect, useState } from 'react';
 import AdvancedInputForm from '@/components/forms/AdvancedInputForm';
+import PremiumModal from '@/components/PremiumModal';
 
 export default function AdvancedPage() {
+  const [isPremium, setIsPremium] = useState(false);
+  const [isPremiumOpen, setIsPremiumOpen] = useState(false);
+
+  useEffect(() => {
+    const flag = localStorage.getItem('isPremium');
+    if (flag === 'true') setIsPremium(true);
+  }, []);
+
   return (
     <main className="max-w-2xl mx-auto px-4 py-8">
       <div className="text-center mb-8">
@@ -17,11 +27,34 @@ export default function AdvancedPage() {
         </div>
       </div>
 
-      <AdvancedInputForm />
+      {isPremium ? (
+        <AdvancedInputForm />
+      ) : (
+        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-6 text-center">
+          <h3 className="text-lg font-bold text-gray-800 mb-2">
+            🔒 詳細シミュレーションは有料版で解放
+          </h3>
+          <p className="text-sm text-gray-600 mb-4">
+            資産口座・ローン・教育費を考慮した高精度シミュレーションが利用できます。
+          </p>
+          <button
+            type="button"
+            onClick={() => setIsPremiumOpen(true)}
+            className="rounded-xl bg-emerald-600 px-6 py-3 text-white font-bold hover:bg-emerald-700 transition"
+          >
+            詳細シミュレーションを解放する（¥980）
+          </button>
+        </div>
+      )}
 
       <footer className="text-center mt-8 text-xs text-gray-400">
         ※ このシミュレーターは教育目的です。実際の投資判断は専門家にご相談ください。
       </footer>
+
+      <PremiumModal
+        isOpen={isPremiumOpen}
+        onClose={() => setIsPremiumOpen(false)}
+      />
     </main>
   );
 }

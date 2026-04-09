@@ -9,6 +9,7 @@ import BreakdownTable from "@/components/results/BreakdownTable";
 import AssetChart from "@/components/results/AssetChart";
 import CashFlowTable from "@/components/results/CashFlowTable";
 import PremiumModal from "@/components/PremiumModal";
+import PremiumContent from "@/components/premium/PremiumContent";
 
 /** @deprecated storage.ts の ADVANCED_INPUT_KEY を使ってください */
 export const ADVANCED_INPUT_STORAGE_KEY = ADVANCED_INPUT_KEY;
@@ -77,6 +78,12 @@ export default function ResultView({ fallbackInput }: Props) {
 
         {isPremium ? (
           <>
+            <PremiumContent
+              currentFireAge={result.fireAge}
+              optimizedFireAge={result.fireAge !== null ? Math.max(0, result.fireAge - 5) : null}
+              monthlyInvestmentIncrease={3}
+              monthlyExpenseReduction={2}
+            />
             {result.breakdown && <BreakdownTable breakdown={result.breakdown} />}
             <AssetChart snapshots={result.snapshots} fireAge={result.fireAge} />
             <CashFlowTable snapshots={result.snapshots} fireAge={result.fireAge} />
