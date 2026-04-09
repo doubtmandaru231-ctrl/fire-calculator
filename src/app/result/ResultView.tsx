@@ -79,8 +79,8 @@ export default function ResultView({ fallbackInput }: Props) {
         {isPremium ? (
           <>
             <PremiumContent
-              currentFireAge={result.fireAge}
-              optimizedFireAge={result.fireAge !== null ? Math.max(0, result.fireAge - 5) : null}
+              currentFireAge={result.fireAge ?? null}
+              optimizedFireAge={result.fireAge != null ? Math.max(0, result.fireAge - 5) : null}
               monthlyInvestmentIncrease={3}
               monthlyExpenseReduction={2}
             />
