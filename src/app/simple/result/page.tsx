@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import type { SimpleInput } from "@/types";
 import { runSimpleSimulation } from "@/lib/calculator/simpleSimulator";
 import ResultSummary from "@/components/results/ResultSummary";
@@ -67,7 +68,7 @@ export default async function SimpleResultPage({ searchParams }: PageProps) {
     無料で診断できる👇
     #FIRE #資産運用`;
 
-  const shareUrl = "https://fire-calculator-bery1.vercel.app";
+  const shareUrl = "https://fire-calculator-beryl.vercel.app";
   const xShareUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(
     shareText,
   )}&url=${encodeURIComponent(shareUrl)}`;
@@ -102,6 +103,15 @@ export default async function SimpleResultPage({ searchParams }: PageProps) {
             Xでシェアする
           </button>
         </a>
+      </div>
+
+      <div className="mt-4 text-center">
+        <Link
+          href="/"
+          className="inline-block rounded-lg bg-gray-100 px-6 py-3 font-bold text-gray-700 hover:bg-gray-200 transition"
+        >
+          ← トップに戻る
+        </Link>
       </div>
 
       <footer className="text-center mt-8 text-xs text-gray-400">
