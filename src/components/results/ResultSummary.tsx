@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import type { SimulationResult, SuggestionType } from '@/types';
 import { toManEn } from '@/lib/calculator/utils';
 
@@ -209,6 +210,15 @@ export default function ResultSummary({ result }: Props) {
         isOpen={isPremiumOpen}
         onClose={() => setIsPremiumOpen(false)}
       />
+
+      <div className="mt-6 text-center">
+        <Link
+          href="/"
+          className="inline-block rounded-lg bg-gray-100 px-6 py-3 font-bold text-gray-700 hover:bg-gray-200 transition"
+        >
+          ← トップに戻る
+        </Link>
+      </div>
     </section>
   );
 }

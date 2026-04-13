@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { runAdvancedSimulation } from "@/lib/calculator/simulator";
 import type { AdvancedInput, SimulationResult } from "@/types";
 import { ADVANCED_INPUT_KEY, loadFromStorage } from "@/lib/storage";
@@ -191,6 +192,15 @@ export default function ResultView({ fallbackInput }: Props) {
             Xでシェアする
           </button>
         </a>
+      </div>
+ 
+      <div className="mt-4 text-center">
+        <Link
+          href="/"
+          className="inline-block rounded-lg bg-gray-100 px-6 py-3 font-bold text-gray-700 hover:bg-gray-200 transition"
+        >
+          ← トップに戻る
+        </Link>
       </div>
     </>
   );
