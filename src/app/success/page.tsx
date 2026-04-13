@@ -1,11 +1,18 @@
 "use client";
 
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function SuccessPage() {
+  const router = useRouter();
+
   useEffect(() => {
     localStorage.setItem("isPremium", "true");
-  }, []);
+
+    setTimeout(() => {
+      router.push("/result");
+    }, 1500);
+  }, [router]);
 
   return (
     <main className="mx-auto max-w-xl px-6 py-16 text-center">
@@ -14,7 +21,7 @@ export default function SuccessPage() {
       </h1>
 
       <p className="mb-6 text-gray-600">
-        詳細シミュレーションがこのブラウザで解放されました。
+        詳細シミュレーションがこのブラウザで解放されました。まもなく結果画面に移動します。
       </p>
 
       <a
