@@ -40,7 +40,12 @@ export default function SimplePage() {
           </p>
           <button
             type="button"
-            onClick={() => setIsPremiumOpen(true)}
+            onClick={() => {
+              window.gtag?.("event", "click_premium", {
+                location: "simple_input_gate",
+              });
+              setIsPremiumOpen(true);
+            }}
             className="rounded-xl bg-emerald-600 px-6 py-3 text-white font-bold hover:bg-emerald-700 transition"
           >
             詳細シミュレーションを解放する（¥980）

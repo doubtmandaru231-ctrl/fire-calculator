@@ -9,6 +9,9 @@ export default function SuccessPage() {
   useEffect(() => {
     localStorage.setItem("isPremium", "true");
 
+    // GA購入イベント
+    window.gtag?.("event", "purchase");
+
     setTimeout(() => {
       router.push("/result");
     }, 1500);

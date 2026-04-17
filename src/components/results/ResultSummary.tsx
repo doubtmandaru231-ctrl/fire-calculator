@@ -194,7 +194,12 @@ export default function ResultSummary({ result }: Props) {
         <div className="mt-6 text-center">
           <button
             type="button"
-            onClick={() => setIsPremiumOpen(true)}
+            onClick={() => {
+              window.gtag?.("event", "click_premium", {
+                location: "simple_result_summary",
+              });
+              setIsPremiumOpen(true);
+            }}
             className="w-full rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 py-4 text-lg font-bold text-white hover:opacity-90 transition"
           >
             最短でFIREする具体プランを見る（¥980）
