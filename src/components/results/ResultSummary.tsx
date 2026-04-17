@@ -195,7 +195,7 @@ export default function ResultSummary({ result }: Props) {
           <button
             type="button"
             onClick={() => {
-              window.gtag?.("event", "click_premium", {
+              (window as any).gtag?.("event", "click_premium", {
                 location: "simple_result_summary",
               });
               setIsPremiumOpen(true);

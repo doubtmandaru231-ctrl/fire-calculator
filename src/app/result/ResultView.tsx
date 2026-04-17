@@ -120,7 +120,7 @@ export default function ResultView({ fallbackInput }: Props) {
     無料で診断できる👇
     #FIRE #資産運用`;
 
-  const shareUrl = "https://fire-calculator-bery1.vercel.app";
+  const shareUrl = "https://fire-calculator-beryl.vercel.app";
 
   const xShareUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(
     shareText,
@@ -173,7 +173,7 @@ export default function ResultView({ fallbackInput }: Props) {
             <button
               type="button"
               onClick={() => {
-                window.gtag?.("event", "click_premium", {
+                (window as any).gtag?.("event", "click_premium", {
                   location: "advanced_result_view",
                 });
                 setIsPremiumOpen(true);

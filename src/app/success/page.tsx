@@ -10,7 +10,7 @@ export default function SuccessPage() {
     localStorage.setItem("isPremium", "true");
 
     // GA購入イベント
-    window.gtag?.("event", "purchase");
+    (window as any).gtag?.("event", "purchase");
 
     setTimeout(() => {
       router.push("/result");

@@ -41,7 +41,7 @@ export default function AdvancedPage() {
           <button
             type="button"
             onClick={() => {
-              window.gtag?.("event", "click_premium", {
+              (window as any).gtag?.("event", "click_premium", {
                 location: "advanced_input_gate",
               });
               setIsPremiumOpen(true);
